@@ -1,0 +1,38 @@
+﻿<Window x:Class="Morphological_image_analyzer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Morphological_image_analyzer"
+        mc:Ignorable="d"
+        Title="Analizator morfologiczny obrazów" Height="450" Width="1000" ResizeMode="NoResize">
+    <Grid Background="#FFBFBFBF">
+        <Canvas HorizontalAlignment="Left" Height="260" Margin="39,67,0,0" VerticalAlignment="Top" Width="260" Background="White">
+            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="260" VerticalAlignment="Top" Width="260"/>
+        </Canvas>
+        <Canvas Name="analizedCanvas" HorizontalAlignment="Left" Height="260" Margin="321,67,0,0" VerticalAlignment="Top" Width="260" Background="White">
+            <Border BorderBrush="Black" BorderThickness="1" Height="260" Width="260"/>
+        </Canvas>
+        <Label Content="Oryginalny obraz" HorizontalAlignment="Left" Margin="39,25,0,0" VerticalAlignment="Top" Width="260" FontWeight="Bold" FontSize="20"/>
+        <Label Content="Analizowany obraz" HorizontalAlignment="Left" Margin="321,25,0,0" VerticalAlignment="Top" Width="200" FontWeight="Bold" FontSize="20"/>
+        <Button Content="Ustaw jako oryginalny" HorizontalAlignment="Left" Margin="321,332,0,0" VerticalAlignment="Top" Width="149" Height="45"/>
+        <Label Content="Dostępne przekształcenia morfologiczne" HorizontalAlignment="Left" Margin="651,96,0,0" VerticalAlignment="Top" Height="25" Width="242" FontWeight="Bold"/>
+        <Button Content="Wyczyść" HorizontalAlignment="Left" Margin="476,332,0,0" VerticalAlignment="Top" Width="105" Height="45"/>
+        <Label Content="Dodawanie obiektów do analizowanego obrazu" HorizontalAlignment="Left" Margin="634,10,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+        <Button HorizontalAlignment="Left" Margin="680,41,0,0" VerticalAlignment="Top" Width="50" Height="50" Click="addSquere_Click">
+            <Rectangle Fill="#FFF4F4F5" Height="30" Stroke="Black" Width="30"/>
+        </Button>
+        <Button HorizontalAlignment="Left" Margin="750,41,0,0" VerticalAlignment="Top" Width="50" Height="50" Click="addEllipse_Click">
+            <Ellipse Fill="#FFF4F4F5" Height="30" Stroke="Black" Width="30"/>
+        </Button>
+
+        <Button HorizontalAlignment="Left" Margin="820,41,0,0" VerticalAlignment="Top" Width="50" Height="50" Click="addLine_Click">
+            <Rectangle Fill="#FFF4F4F5" Height="1" Stroke="Black" Width="30"/>
+        </Button>
+        <Button Content="Dylacja" HorizontalAlignment="Left" Margin="680,126,0,0" VerticalAlignment="Top" Width="50" Height="40"/>
+        <Button Content="Erozja" HorizontalAlignment="Left" Margin="680,183,0,0" VerticalAlignment="Top" Width="50" Height="40"/>
+        <Button Content="Dylacja erozji" HorizontalAlignment="Left" Margin="786,126,0,0" VerticalAlignment="Top" Width="84" Height="40"/>
+        <Button Content="Erozja dylacji" HorizontalAlignment="Left" Margin="786,183,0,0" VerticalAlignment="Top" Width="84" Height="40"/>
+
+    </Grid>
+</Window>
