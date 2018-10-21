@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Analizator morfologiczny obrazów" Height="450" Width="1000" ResizeMode="NoResize">
     <Grid Background="#FFBFBFBF">
-        <Canvas HorizontalAlignment="Left" Height="260" Margin="39,67,0,0" VerticalAlignment="Top" Width="260" Background="White">
+        <Canvas Name="oryginalCanvas" HorizontalAlignment="Left" Height="260" Margin="39,67,0,0" VerticalAlignment="Top" Width="260" Background="White">
             <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="260" VerticalAlignment="Top" Width="260"/>
         </Canvas>
         <Canvas Name="analizedCanvas" HorizontalAlignment="Left" Height="260" Margin="321,67,0,0" VerticalAlignment="Top" Width="260" Background="White">
@@ -29,7 +29,7 @@
         <Button HorizontalAlignment="Left" Margin="820,41,0,0" VerticalAlignment="Top" Width="50" Height="50" Click="addLine_Click">
             <Rectangle Fill="#FFF4F4F5" Height="1" Stroke="Black" Width="30"/>
         </Button>
-        <Button Content="Dylacja" HorizontalAlignment="Left" Margin="680,126,0,0" VerticalAlignment="Top" Width="50" Height="40"/>
+        <Button Content="Dylacja" HorizontalAlignment="Left" Margin="680,126,0,0" VerticalAlignment="Top" Width="50" Height="40" Click="performDilation_Click"/>
         <Button Content="Erozja" HorizontalAlignment="Left" Margin="680,183,0,0" VerticalAlignment="Top" Width="50" Height="40"/>
         <Button Content="Dylacja erozji" HorizontalAlignment="Left" Margin="786,126,0,0" VerticalAlignment="Top" Width="84" Height="40"/>
         <Button Content="Erozja dylacji" HorizontalAlignment="Left" Margin="786,183,0,0" VerticalAlignment="Top" Width="84" Height="40"/>
