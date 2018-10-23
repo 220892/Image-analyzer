@@ -65,29 +65,6 @@ namespace Morphological_image_analyzer
 
         void performDilation_Click(object sender, RoutedEventArgs e)
         {
-            //RenderTargetBitmap bitmap = new RenderTargetBitmap((int)analizedCanvas.Width, (int)analizedCanvas.Height, 96d, 96d, PixelFormats.Pbgra32);
-            //bitmap.Render(analizedCanvas);
-
-            //BitmapEncoder encoder = new PngBitmapEncoder();
-            //encoder.Frames.Add(BitmapFrame.Create(bitmap));
-
-            //using (Stream stm = File.Create("C:\test\test.png"))
-            //{
-            //    encoder.Save(stm);
-            //}
-
-            //dilationCalculator.setImage(new Bitmap("C:\test\test.png"));
-            //dilationCalculator.performMorphologicalOperation();
-            //Bitmap bitmapPerformed = dilationCalculator.getImage();
-
-            //this.analizedCanvas.Children.Clear();
-
-            //Stream stm = File.Open("C:\test\test.png", FileMode.Open);
-
-            //encoder.Frames.Clear();
-
-            //analizedCanvas.Children.Add(bitmapPerformed.);
-
             WriteableBitmap writeableBitmapFromCanvas = SaveAsWriteableBitmap(analizedCanvas);
             Bitmap bitmapFromCanvas = BitmapFromWriteableBitmap(writeableBitmapFromCanvas);
 
@@ -153,5 +130,17 @@ namespace Morphological_image_analyzer
             }
             return bmp;
         }
+
+        private void clearAnalized_Click(object sender, RoutedEventArgs e)
+        {
+            analizedCanvas.Children.Clear();
+            analizedCanvas.Children.Add(analizedBorder);
+        }
+
+        private void setAsOriginal_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
     }
 }

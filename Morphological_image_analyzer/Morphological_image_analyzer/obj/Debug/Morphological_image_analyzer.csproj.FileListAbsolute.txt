@@ -12,3 +12,4 @@ C:\PRZEK_MORF\Morphological_image_analyzer\Morphological_image_analyzer\obj\Debu
 C:\PRZEK_MORF\Morphological_image_analyzer\Morphological_image_analyzer\obj\Debug\Morphological_image_analyzer.csproj.CoreCompileInputs.cache
 C:\PRZEK_MORF\Morphological_image_analyzer\Morphological_image_analyzer\obj\Debug\Morphological_image_analyzer.exe
 C:\PRZEK_MORF\Morphological_image_analyzer\Morphological_image_analyzer\obj\Debug\Morphological_image_analyzer.pdb
+C:\PRZEK_MORF\Morphological_image_analyzer\Morphological_image_analyzer\obj\Debug\Morphological_image_analyzer.csprojAssemblyReference.cache
