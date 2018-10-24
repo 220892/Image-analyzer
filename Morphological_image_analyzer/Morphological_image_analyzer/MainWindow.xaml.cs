@@ -6,6 +6,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Windows.Markup;
+using System.Xml;
 
 namespace Morphological_image_analyzer
 {
@@ -139,7 +142,17 @@ namespace Morphological_image_analyzer
 
         private void setAsOriginal_Click(object sender, RoutedEventArgs e)
         {
-            
+            originalCanvas.Children.Clear();
+            originalCanvas.Children.Add(originalBorder);
+
+            foreach (UIElement element in analizedCanvas.Children)
+            {
+                string saved = XamlWriter.Save(element);
+                StringReader sReader = new StringReader(saved);
+                XmlReader xReader = XmlReader.Create(sReader);
+                UIElement newElement = (UIElement)XamlReader.Load(xReader);
+                originalCanvas.Children.Add(newElement);
+            }
         }
 
     }

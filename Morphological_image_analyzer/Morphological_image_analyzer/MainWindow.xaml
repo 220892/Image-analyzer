@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Analizator morfologiczny obrazów" Height="450" Width="1000" ResizeMode="NoResize">
     <Grid Background="#FFBFBFBF">
-        <Canvas Name="oryginalCanvas" HorizontalAlignment="Left" Height="260" Margin="39,67,0,0" VerticalAlignment="Top" Width="260" Background="White">
+        <Canvas Name="originalCanvas" HorizontalAlignment="Left" Height="260" Margin="39,67,0,0" VerticalAlignment="Top" Width="260" Background="White">
             <Border Name="originalBorder" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="260" VerticalAlignment="Top" Width="260"/>
         </Canvas>
         <Canvas Name="analizedCanvas" HorizontalAlignment="Left" Height="260" Margin="321,67,0,0" VerticalAlignment="Top" Width="260" Background="White">
