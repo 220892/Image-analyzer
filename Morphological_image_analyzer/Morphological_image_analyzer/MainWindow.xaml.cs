@@ -71,9 +71,9 @@ namespace Morphological_image_analyzer
             WriteableBitmap writeableBitmapFromCanvas = SaveAsWriteableBitmap(analizedCanvas);
             Bitmap bitmapFromCanvas = BitmapFromWriteableBitmap(writeableBitmapFromCanvas);
 
-            dilationCalculator.setImage(bitmapFromCanvas);
-            dilationCalculator.performMorphologicalOperation();
-            Bitmap bitmapToCanvas = dilationCalculator.getImage();
+            Bitmap bitmapToCanvas = bitmapFromCanvas;
+
+            //Bitmap bitmapToCanvas = dilationCalculator.performMorphologicalOperation(bitmapFromCanvas, 0);
 
             System.Windows.Media.Imaging.BitmapSource bitmapSource =
                 System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
@@ -83,7 +83,7 @@ namespace Morphological_image_analyzer
 
             analizedCanvas.Children.Clear();
             ImageBrush brush = new ImageBrush();
-            brush.ImageSource = bitmapSource;
+            brush.ImageSource = writeableBitmap;
             analizedCanvas.Background = brush;
         }
 
@@ -136,6 +136,7 @@ namespace Morphological_image_analyzer
 
         private void clearAnalized_Click(object sender, RoutedEventArgs e)
         {
+            analizedCanvas.Background = System.Windows.Media.Brushes.White;
             analizedCanvas.Children.Clear();
             analizedCanvas.Children.Add(analizedBorder);
         }
@@ -144,6 +145,9 @@ namespace Morphological_image_analyzer
         {
             originalCanvas.Children.Clear();
             originalCanvas.Children.Add(originalBorder);
+
+            System.Windows.Media.Brush brush = analizedCanvas.Background;
+            originalCanvas.Background = brush;
 
             foreach (UIElement element in analizedCanvas.Children)
             {

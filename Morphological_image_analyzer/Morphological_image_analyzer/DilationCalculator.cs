@@ -1,86 +1,104 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 
 namespace Morphological_image_analyzer
 {
     public class DilationCalculator
     {
 
-        private Bitmap bmpimg;
-
-        public void setImage(Bitmap bmp)
+        private byte[,] shape
         {
-            bmpimg = (Bitmap)bmp.Clone();
-        }
-
-        public Bitmap getImage()
-        {
-            return (Bitmap)bmpimg.Clone();
-        }
-
-        public void performMorphologicalOperation()
-        {
-
-            byte[,] sele = new byte[3, 3];
-
-                sele[0, 0] = 1;
-                sele[0, 1] = 1;
-                sele[0, 2] = 1;
-                sele[1, 0] = 1;
-                sele[1, 1] = 1;
-                sele[1, 2] = 1;
-                sele[2, 0] = 1;
-                sele[2, 1] = 1;
-                sele[2, 2] = 1;
-
-
-            Bitmap tempbmp = (Bitmap)this.bmpimg.Clone();
-            BitmapData data2 = tempbmp.LockBits(new Rectangle(0, 0, tempbmp.Width, tempbmp.Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppRgb);
-            BitmapData data = bmpimg.LockBits(new Rectangle(0, 0, bmpimg.Width, bmpimg.Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppRgb);
-            byte[,] sElement = sele;
-
-            unsafe
+            get
             {
-                byte* ptr = (byte*)data.Scan0;
-                byte* tptr = (byte*)data2.Scan0;
-
-                ptr += data.Stride + 3;
-                tptr += data.Stride + 3;
-
-                int remain = data.Stride - data.Width * 3;
-
-                for (int i = 1; i < data.Height - 1; i++)
+                return new byte[,]
                 {
-                    for (int j = 1; j < data.Width - 1; j++)
+            { 0, 1, 0 },
+            { 1, 1, 1 },
+            { 0, 1, 0 }
+                };
+            }
+        }
+
+        public Bitmap performMorphologicalOperation(Bitmap srcImg, int kernelSize)
+        {
+            //Create image dimension variables for convenience
+            int width = srcImg.Width;
+            int height = srcImg.Height;
+
+            //Lock bits to system memory for fast processing
+            Rectangle canvas = new Rectangle(0, 0, width, height);
+            BitmapData srcData = srcImg.LockBits(canvas, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            int stride = srcData.Stride;
+            int bytes = stride * srcData.Height;
+
+            //Create byte arrays that will hold all pixel data, one for processing, one for output
+            byte[] pixelBuffer = new byte[bytes];
+            byte[] resultBuffer = new byte[bytes];
+
+            //Write pixel data to array meant for processing
+            Marshal.Copy(srcData.Scan0, pixelBuffer, 0, bytes);
+            srcImg.UnlockBits(srcData);
+
+            //Convert to grayscale
+            float rgb = 0;
+            for (int i = 0; i < bytes; i += 4)
+            {
+                rgb = pixelBuffer[i] * .071f;
+                rgb += pixelBuffer[i + 1] * .71f;
+                rgb += pixelBuffer[i + 2] * .21f;
+                pixelBuffer[i] = (byte)rgb;
+                pixelBuffer[i + 1] = pixelBuffer[i];
+                pixelBuffer[i + 2] = pixelBuffer[i];
+                pixelBuffer[i + 3] = 255;
+            }
+
+            int kernelDim = kernelSize;
+
+            //This is the offset of center pixel from border of the kernel
+            int kernelOffset = (kernelDim - 1) / 2;
+            int calcOffset = 0;
+            int byteOffset = 0;
+            for (int y = kernelOffset; y < height - kernelOffset; y++)
+            {
+                for (int x = kernelOffset; x < width - kernelOffset; x++)
+                {
+                    byte value = 0;
+                    byteOffset = y * stride + x * 4;
+
+                    //Apply dilation
+                    for (int ykernel = -kernelOffset; ykernel <= kernelOffset; ykernel++)
                     {
-
-                        if (ptr[0] == 255)
+                        for (int xkernel = -kernelOffset; xkernel <= kernelOffset; xkernel++)
                         {
-                            byte* temp = tptr - data.Stride - 3;
-
-                            for (int k = 0; k < 3; k++)
+                            if (shape[ykernel + kernelOffset, xkernel + kernelOffset] == 1)
                             {
-                                for (int l = 0; l < 3; l++)
-                                {
-                                    temp[data.Stride * k + l * 3] = temp[data.Stride * k + l * 3 + 1] = temp[data.Stride * k + l * 3 + 2] = (byte)(sElement[k, l] * 255);
-                                }
+                                calcOffset = byteOffset + ykernel * stride + xkernel * 4;
+                                value = Math.Max(value, pixelBuffer[calcOffset]);
+                            }
+                            else
+                            {
+                                continue;
                             }
                         }
-
-                        ptr += 3;
-                        tptr += 3;
                     }
-                    ptr += remain + 6;
-                    tptr += remain + 6;
+                    //Write processed data into the second array
+                    resultBuffer[byteOffset] = value;
+                    resultBuffer[byteOffset + 1] = value;
+                    resultBuffer[byteOffset + 2] = value;
+                    resultBuffer[byteOffset + 3] = 255;
                 }
             }
 
-            bmpimg.UnlockBits(data);
-            tempbmp.UnlockBits(data2);
+            //Create output bitmap of this function
+            Bitmap rsltImg = new Bitmap(width, height);
+            BitmapData rsltData = rsltImg.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 
-            bmpimg = (Bitmap)tempbmp.Clone();
-
+            //Write processed data into bitmap form
+            Marshal.Copy(resultBuffer, 0, rsltData.Scan0, bytes);
+            rsltImg.UnlockBits(rsltData);
+            return rsltImg;
         }
     }
 }
