@@ -6,7 +6,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Windows.Markup;
 using System.Xml;
 
@@ -20,6 +19,9 @@ namespace Morphological_image_analyzer
         static readonly int minSize = 15;
         static readonly int sizeOfWindow = 260;
 
+        static int imageId = 1;
+        static String catalogName = @"c:\Test\";
+
         DilationCalculator dilationCalculator = new DilationCalculator();
 
         Random rnd = new Random();
@@ -27,6 +29,11 @@ namespace Morphological_image_analyzer
         public MainWindow()
         {
             InitializeComponent();
+
+            bool exists = System.IO.Directory.Exists(catalogName);
+
+            if (!exists)
+                System.IO.Directory.CreateDirectory(catalogName);
         }
 
         void addSquere_Click(object sender, RoutedEventArgs e)
@@ -68,57 +75,102 @@ namespace Morphological_image_analyzer
 
         void performDilation_Click(object sender, RoutedEventArgs e)
         {
-            WriteableBitmap writeableBitmapFromCanvas = SaveAsWriteableBitmap(analizedCanvas);
-            Bitmap bitmapFromCanvas = BitmapFromWriteableBitmap(writeableBitmapFromCanvas);
+            analizedCanvas.Children.Remove(analizedBorder);
 
-            Bitmap bitmapToCanvas = bitmapFromCanvas;
+            Rect bounds = VisualTreeHelper.GetDescendantBounds(analizedCanvas);
+            double dpi = 96d;
 
-            //Bitmap bitmapToCanvas = dilationCalculator.performMorphologicalOperation(bitmapFromCanvas, 0);
 
-            System.Windows.Media.Imaging.BitmapSource bitmapSource =
-                System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                bitmapToCanvas.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty,
-                System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
-                System.Windows.Media.Imaging.WriteableBitmap writeableBitmap = new System.Windows.Media.Imaging.WriteableBitmap(bitmapSource);
+            RenderTargetBitmap rtb = new RenderTargetBitmap((int)bounds.Width, (int)bounds.Height, dpi, dpi, System.Windows.Media.PixelFormats.Default);
+
+
+            DrawingVisual dv = new DrawingVisual();
+            using (DrawingContext dc = dv.RenderOpen())
+            {
+                VisualBrush vb = new VisualBrush(analizedCanvas);
+                dc.DrawRectangle(vb, null, new Rect(new System.Windows.Point(), bounds.Size));
+            }
+
+            rtb.Render(dv);
+
+            BitmapEncoder pngEncoder = new PngBitmapEncoder();
+            pngEncoder.Frames.Add(BitmapFrame.Create(rtb));
+
+            try
+            {
+                System.IO.MemoryStream ms = new System.IO.MemoryStream();
+
+                pngEncoder.Save(ms);
+                ms.Close();
+
+                System.IO.File.WriteAllBytes(catalogName + @"image" + imageId + @".png", ms.ToArray());
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+
+
+            BitmapImage bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.UriSource = new Uri(catalogName + @"image" + imageId + @".png");
+            bitmap.EndInit();
+
+            imageId = imageId + 1;
+
+
+            Bitmap bitmapConverted = BitmapImage2Bitmap(bitmap);
+
+            Bitmap bitmapPerformed = dilationCalculator.performMorphologicalOperation(bitmapConverted, 3);
+
+            BitmapSource bitmapToPut = Bitmap2BitmapImage(bitmapPerformed);
+
 
             analizedCanvas.Children.Clear();
             ImageBrush brush = new ImageBrush();
-            brush.ImageSource = writeableBitmap;
+            brush.ImageSource = bitmapToPut;
             analizedCanvas.Background = brush;
+            analizedCanvas.Children.Add(analizedBorder);
         }
 
-        public WriteableBitmap SaveAsWriteableBitmap(Canvas surface)
+
+        private Bitmap BitmapImage2Bitmap(BitmapImage bitmapImage)
         {
-            if (surface == null) return null;
 
-            // Save current canvas transform
-            Transform transform = surface.LayoutTransform;
-            // reset current transform (in case it is scaled or rotated)
-            surface.LayoutTransform = null;
+            using (MemoryStream outStream = new MemoryStream())
+            {
+                BitmapEncoder enc = new BmpBitmapEncoder();
+                enc.Frames.Add(BitmapFrame.Create(bitmapImage));
+                enc.Save(outStream);
+                System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(outStream);
 
-            // Get the size of canvas
-            System.Windows.Size size = new System.Windows.Size(surface.ActualWidth, surface.ActualHeight);
-            // Measure and arrange the surface
-            // VERY IMPORTANT
-            surface.Measure(size);
-            surface.Arrange(new Rect(size));
+                return new Bitmap(bitmap);
+            }
+        }
 
-            // Create a render bitmap and push the surface to it
-            RenderTargetBitmap renderBitmap = new RenderTargetBitmap(
-              (int)size.Width,
-              (int)size.Height,
-              96d,
-              96d,
-              PixelFormats.Pbgra32);
-            renderBitmap.Render(surface);
+        [System.Runtime.InteropServices.DllImport("gdi32.dll")]
+        public static extern bool DeleteObject(IntPtr hObject);
 
+        private BitmapSource Bitmap2BitmapImage(Bitmap bitmap)
+        {
+            IntPtr hBitmap = bitmap.GetHbitmap();
+            BitmapSource retval;
 
-            //Restore previously saved layout
-            surface.LayoutTransform = transform;
+            try
+            {
+                retval = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+                             hBitmap,
+                             IntPtr.Zero,
+                             Int32Rect.Empty,
+                             BitmapSizeOptions.FromEmptyOptions());
+            }
+            finally
+            {
+                DeleteObject(hBitmap);
+            }
 
-            //create and return a new WriteableBitmap using the RenderTargetBitmap
-            return new WriteableBitmap(renderBitmap);
-
+            return retval;
         }
 
         private System.Drawing.Bitmap BitmapFromWriteableBitmap(WriteableBitmap writeBmp)
