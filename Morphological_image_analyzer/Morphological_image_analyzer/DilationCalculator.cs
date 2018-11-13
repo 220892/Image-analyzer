@@ -41,19 +41,6 @@ namespace Morphological_image_analyzer
             Marshal.Copy(srcData.Scan0, pixelBuffer, 0, bytes);
             srcImg.UnlockBits(srcData);
 
-            //Convert to grayscale
-            float rgb = 0;
-            for (int i = 0; i < bytes; i += 4)
-            {
-                rgb = pixelBuffer[i] * .071f;
-                rgb += pixelBuffer[i + 1] * .71f;
-                rgb += pixelBuffer[i + 2] * .21f;
-                pixelBuffer[i] = (byte)rgb;
-                pixelBuffer[i + 1] = pixelBuffer[i];
-                pixelBuffer[i + 2] = pixelBuffer[i];
-                pixelBuffer[i + 3] = 255;
-            }
-
             int kernelDim = kernelSize;
 
             //This is the offset of center pixel from border of the kernel
