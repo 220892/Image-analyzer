@@ -24,6 +24,8 @@ namespace Morphological_image_analyzer
 
         DilationCalculator dilationCalculator = new DilationCalculator();
 
+        ErosionCalculator erosionCalculator = new ErosionCalculator();
+
         Random rnd = new Random();
 
         public MainWindow()
@@ -123,6 +125,68 @@ namespace Morphological_image_analyzer
             Bitmap bitmapConverted = BitmapImage2Bitmap(bitmap);
 
             Bitmap bitmapPerformed = dilationCalculator.performMorphologicalOperation(bitmapConverted, 3);
+
+            BitmapSource bitmapToPut = Bitmap2BitmapImage(bitmapPerformed);
+
+
+            analizedCanvas.Children.Clear();
+            ImageBrush brush = new ImageBrush();
+            brush.ImageSource = bitmapToPut;
+            analizedCanvas.Background = brush;
+            analizedCanvas.Children.Add(analizedBorder);
+        }
+
+
+        void performErosion_Click(object sender, RoutedEventArgs e)
+        {
+            analizedCanvas.Children.Remove(analizedBorder);
+
+            Rect bounds = VisualTreeHelper.GetDescendantBounds(analizedCanvas);
+            double dpi = 96d;
+
+
+            RenderTargetBitmap rtb = new RenderTargetBitmap((int)bounds.Width, (int)bounds.Height, dpi, dpi, System.Windows.Media.PixelFormats.Default);
+
+
+            DrawingVisual dv = new DrawingVisual();
+            using (DrawingContext dc = dv.RenderOpen())
+            {
+                VisualBrush vb = new VisualBrush(analizedCanvas);
+                dc.DrawRectangle(vb, null, new Rect(new System.Windows.Point(), bounds.Size));
+            }
+
+            rtb.Render(dv);
+
+            BitmapEncoder pngEncoder = new PngBitmapEncoder();
+            pngEncoder.Frames.Add(BitmapFrame.Create(rtb));
+
+            try
+            {
+                System.IO.MemoryStream ms = new System.IO.MemoryStream();
+
+                pngEncoder.Save(ms);
+                ms.Close();
+
+                System.IO.File.WriteAllBytes(catalogName + @"image" + imageId + @".png", ms.ToArray());
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+
+
+            BitmapImage bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.UriSource = new Uri(catalogName + @"image" + imageId + @".png");
+            bitmap.EndInit();
+
+            imageId = imageId + 1;
+
+
+            Bitmap bitmapConverted = BitmapImage2Bitmap(bitmap);
+
+            Bitmap bitmapPerformed = erosionCalculator.performMorphologicalOperation(bitmapConverted);
 
             BitmapSource bitmapToPut = Bitmap2BitmapImage(bitmapPerformed);
 

@@ -30,7 +30,7 @@
             <Rectangle Fill="#FFF4F4F5" Height="1" Stroke="Black" Width="30"/>
         </Button>
         <Button Content="Dylacja" HorizontalAlignment="Left" Margin="680,126,0,0" VerticalAlignment="Top" Width="50" Height="40" Click="performDilation_Click"/>
-        <Button Content="Erozja" HorizontalAlignment="Left" Margin="680,183,0,0" VerticalAlignment="Top" Width="50" Height="40"/>
+        <Button Content="Erozja" HorizontalAlignment="Left" Margin="680,183,0,0" VerticalAlignment="Top" Width="50" Height="40" Click="performErosion_Click"/>
         <Button Content="Dylacja erozji" HorizontalAlignment="Left" Margin="786,126,0,0" VerticalAlignment="Top" Width="84" Height="40"/>
         <Button Content="Erozja dylacji" HorizontalAlignment="Left" Margin="786,183,0,0" VerticalAlignment="Top" Width="84" Height="40"/>
 
