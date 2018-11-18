@@ -66,10 +66,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CanvasBitmapSupport.cs" />
+    <Compile Include="AbstractDilationAndErosionCalculator.cs" />
     <Compile Include="DilationCalculator.cs" />
     <Compile Include="DilationOfErosionCalculator.cs" />
     <Compile Include="ErosionCalculator.cs" />
     <Compile Include="ErosionOfDilationCalculator.cs" />
+    <Compile Include="IMorphologicalCalculator.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
