@@ -21,7 +21,7 @@ namespace Morphological_image_analyzer
             }
         }
 
-        public Bitmap performMorphologicalOperation(Bitmap srcImg, int kernelSize)
+        public Bitmap performMorphologicalOperation(Bitmap srcImg)
         {
             //Create image dimension variables for convenience
             int width = srcImg.Width;
@@ -41,6 +41,7 @@ namespace Morphological_image_analyzer
             Marshal.Copy(srcData.Scan0, pixelBuffer, 0, bytes);
             srcImg.UnlockBits(srcData);
 
+            int kernelSize = 3;
             int kernelDim = kernelSize;
 
             //This is the offset of center pixel from border of the kernel
@@ -51,7 +52,7 @@ namespace Morphological_image_analyzer
             {
                 for (int x = kernelOffset; x < width - kernelOffset; x++)
                 {
-                    byte value = 0;
+                    byte value = 255;
                     byteOffset = y * stride + x * 4;
 
                     //Apply dilation
@@ -62,7 +63,7 @@ namespace Morphological_image_analyzer
                             if (shape[ykernel + kernelOffset, xkernel + kernelOffset] == 1)
                             {
                                 calcOffset = byteOffset + ykernel * stride + xkernel * 4;
-                                value = Math.Max(value, pixelBuffer[calcOffset]);
+                                value = Math.Min(value, pixelBuffer[calcOffset]);
                             }
                             else
                             {

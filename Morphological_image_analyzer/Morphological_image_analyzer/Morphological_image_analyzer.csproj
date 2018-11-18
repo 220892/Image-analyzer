@@ -65,6 +65,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CanvasBitmapSupport.cs" />
     <Compile Include="DilationCalculator.cs" />
     <Compile Include="ErosionCalculator.cs" />
     <Compile Include="MainWindow.xaml.cs">

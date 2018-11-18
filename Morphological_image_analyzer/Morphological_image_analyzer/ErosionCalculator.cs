@@ -44,7 +44,7 @@ public class ErosionCalculator
         {
             for (int x = kernelOffset; x < width - kernelOffset; x++)
             {
-                byte value = 255;
+                byte value = 0;
                 byteOffset = y * srcData.Stride + x * 4;
                 for (int ykernel = -kernelOffset; ykernel <= kernelOffset; ykernel++)
                 {
@@ -53,7 +53,7 @@ public class ErosionCalculator
                         if (kernel[ykernel + kernelOffset, xkernel + kernelOffset] == 1)
                         {
                             calcOffset = byteOffset + ykernel * srcData.Stride + xkernel * 4;
-                            value = Math.Min(value, pixelBuffer[calcOffset]);
+                            value = Math.Max(value, pixelBuffer[calcOffset]);
                         }
                         else
                         {
