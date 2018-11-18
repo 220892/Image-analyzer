@@ -8,21 +8,7 @@ namespace Morphological_image_analyzer
     public abstract class AbstractDilationAndErosionCalculator : IMorphologicalCalculator
     {
 
-        private byte[,] kernel
-        {
-            get
-            {
-                return new byte[,]
-                {
-            { 0, 1, 0 },
-            { 1, 1, 1 },
-            { 0, 1, 0 }
-                };
-            }
-        }
-
-
-        public Bitmap performMorphologicalOperation(Bitmap srcImage)
+        public Bitmap performMorphologicalOperation(Bitmap srcImage, byte[,] kernel)
         {
             int width = srcImage.Width;
             int height = srcImage.Height;

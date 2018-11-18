@@ -8,10 +8,10 @@ namespace Morphological_image_analyzer
         static readonly DilationCalculator dilationCalculator = new DilationCalculator();
         static readonly ErosionCalculator erosionCalculator = new ErosionCalculator();
 
-        public Bitmap performMorphologicalOperation(Bitmap srcImg)
+        public Bitmap performMorphologicalOperation(Bitmap srcImg, byte[,] kernel)
         {
-            srcImg = dilationCalculator.performMorphologicalOperation(srcImg);
-            srcImg = erosionCalculator.performMorphologicalOperation(srcImg);
+            srcImg = dilationCalculator.performMorphologicalOperation(srcImg, kernel);
+            srcImg = erosionCalculator.performMorphologicalOperation(srcImg, kernel);
 
             return srcImg;
         }

@@ -16,18 +16,32 @@ namespace Morphological_image_analyzer
     /// </summary>
     public partial class MainWindow : Window
     {
-        static readonly int minSize = 15; // minimum size of auto-generated element
-        static readonly int sizeOfWindow = 260; // size of window with analized image
-
-        static readonly Random rnd = new Random(); // random numbers generator
-
         // injection of morphological operation performers
         static readonly IMorphologicalCalculator dilationCalculator = new DilationCalculator();
         static readonly IMorphologicalCalculator erosionCalculator = new ErosionCalculator();
         static readonly IMorphologicalCalculator dilationOfErosionCalculator = new DilationOfErosionCalculator();
         static readonly IMorphologicalCalculator erosionOfDilationCalculator = new ErosionOfDilationCalculator();
 
+
+        static readonly int minSize = 15; // minimum size of auto-generated element
+        static readonly int sizeOfWindow = 260; // size of window with analized image
+
+        static readonly Random rnd = new Random(); // random numbers generator
+
         CanvasBitmapSupport canvasBitmapSupport = new CanvasBitmapSupport();
+
+        private byte[,] kernel
+        {
+            get
+            {
+                return new byte[,]
+                {
+            { 0, 1, 0 },
+            { 1, 1, 1 },
+            { 0, 1, 0 }
+                };
+            }
+        }
 
         public MainWindow()
         {
@@ -105,7 +119,7 @@ namespace Morphological_image_analyzer
 
             Bitmap bitmapConverted = canvasBitmapSupport.convertCanvasToBitmap(analizedCanvas);
 
-            Bitmap bitmapPerformed = dilationCalculator.performMorphologicalOperation(bitmapConverted);
+            Bitmap bitmapPerformed = dilationCalculator.performMorphologicalOperation(bitmapConverted, kernel);
 
             BitmapSource bitmapToPut = canvasBitmapSupport.convertBitmapToBitmapImage(bitmapPerformed);
 
@@ -123,7 +137,7 @@ namespace Morphological_image_analyzer
 
             Bitmap bitmapConverted = canvasBitmapSupport.convertCanvasToBitmap(analizedCanvas);
 
-            Bitmap bitmapPerformed = erosionCalculator.performMorphologicalOperation(bitmapConverted);
+            Bitmap bitmapPerformed = erosionCalculator.performMorphologicalOperation(bitmapConverted, kernel);
 
             BitmapSource bitmapToPut = canvasBitmapSupport.convertBitmapToBitmapImage(bitmapPerformed);
 
@@ -140,7 +154,7 @@ namespace Morphological_image_analyzer
 
             Bitmap bitmapConverted = canvasBitmapSupport.convertCanvasToBitmap(analizedCanvas);
 
-            Bitmap bitmapPerformed = dilationOfErosionCalculator.performMorphologicalOperation(bitmapConverted);
+            Bitmap bitmapPerformed = dilationOfErosionCalculator.performMorphologicalOperation(bitmapConverted, kernel);
 
             BitmapSource bitmapToPut = canvasBitmapSupport.convertBitmapToBitmapImage(bitmapPerformed);
 
@@ -157,7 +171,7 @@ namespace Morphological_image_analyzer
 
             Bitmap bitmapConverted = canvasBitmapSupport.convertCanvasToBitmap(analizedCanvas);
 
-            Bitmap bitmapPerformed = erosionOfDilationCalculator.performMorphologicalOperation(bitmapConverted);
+            Bitmap bitmapPerformed = erosionOfDilationCalculator.performMorphologicalOperation(bitmapConverted, kernel);
 
             BitmapSource bitmapToPut = canvasBitmapSupport.convertBitmapToBitmapImage(bitmapPerformed);
 

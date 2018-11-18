@@ -4,6 +4,6 @@ namespace Morphological_image_analyzer
 {
     interface IMorphologicalCalculator
     {
-        Bitmap performMorphologicalOperation(Bitmap srcImg);
+        Bitmap performMorphologicalOperation(Bitmap srcImg, byte[,] kernel);
     }
 }
