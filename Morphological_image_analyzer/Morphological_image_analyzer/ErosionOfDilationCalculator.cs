@@ -2,7 +2,7 @@
 
 namespace Morphological_image_analyzer
 {
-    class ErosionOfDilationCalculator
+    class ErosionOfDilationCalculator : IMorphologicalCalculator
     {
         // injection of morphological operation performers
         static readonly DilationCalculator dilationCalculator = new DilationCalculator();

@@ -22,10 +22,10 @@ namespace Morphological_image_analyzer
         static readonly Random rnd = new Random(); // random numbers generator
 
         // injection of morphological operation performers
-        static readonly DilationCalculator dilationCalculator = new DilationCalculator();
-        static readonly ErosionCalculator erosionCalculator = new ErosionCalculator();
-        static readonly DilationOfErosionCalculator dilationOfErosionCalculator = new DilationOfErosionCalculator();
-        static readonly ErosionOfDilationCalculator erosionOfDilationCalculator = new ErosionOfDilationCalculator();
+        static readonly IMorphologicalCalculator dilationCalculator = new DilationCalculator();
+        static readonly IMorphologicalCalculator erosionCalculator = new ErosionCalculator();
+        static readonly IMorphologicalCalculator dilationOfErosionCalculator = new DilationOfErosionCalculator();
+        static readonly IMorphologicalCalculator erosionOfDilationCalculator = new ErosionOfDilationCalculator();
 
         CanvasBitmapSupport canvasBitmapSupport = new CanvasBitmapSupport();
 

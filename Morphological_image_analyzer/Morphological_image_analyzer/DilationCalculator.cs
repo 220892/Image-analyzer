@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace Morphological_image_analyzer
 {
-    public class DilationCalculator
+    public class DilationCalculator : IMorphologicalCalculator
     {
 
         private byte[,] shape
