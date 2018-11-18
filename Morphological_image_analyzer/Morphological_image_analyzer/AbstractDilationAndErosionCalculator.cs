@@ -5,11 +5,13 @@ using System.Runtime.InteropServices;
 
 namespace Morphological_image_analyzer
 {
-    public abstract class AbstractDilationAndErosionCalculator : IMorphologicalCalculator
+    public abstract class AbstractDilationAndErosionCalculator : AbstractMorphologicalCalculator
     {
 
-        public Bitmap performMorphologicalOperation(Bitmap srcImage, byte[,] kernel)
+        public override Bitmap performMorphologicalOperation(Bitmap srcImage, byte[,] kernel)
         {
+            validateKernel(kernel);
+
             int width = srcImage.Width;
             int height = srcImage.Height;
 

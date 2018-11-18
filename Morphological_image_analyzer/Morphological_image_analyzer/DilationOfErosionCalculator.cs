@@ -3,14 +3,16 @@
 
 namespace Morphological_image_analyzer
 {
-    class DilationOfErosionCalculator : IMorphologicalCalculator
+    class DilationOfErosionCalculator : AbstractMorphologicalCalculator
     {
         // injection of morphological operation performers
         static readonly DilationCalculator dilationCalculator = new DilationCalculator();
         static readonly ErosionCalculator erosionCalculator = new ErosionCalculator();
 
-        public Bitmap performMorphologicalOperation(Bitmap srcImg, byte[,] kernel)
+        public override Bitmap performMorphologicalOperation(Bitmap srcImg, byte[,] kernel)
         {
+            validateKernel(kernel);
+
             srcImg = erosionCalculator.performMorphologicalOperation(srcImg, kernel);
             srcImg = dilationCalculator.performMorphologicalOperation(srcImg, kernel);
 
