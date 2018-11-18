@@ -24,6 +24,7 @@ namespace Morphological_image_analyzer
         // injection of morphological operation performers
         static readonly DilationCalculator dilationCalculator = new DilationCalculator();
         static readonly ErosionCalculator erosionCalculator = new ErosionCalculator();
+        static readonly DilationOfErosionCalculator dilationOfErosionCalculator = new DilationOfErosionCalculator();
 
         CanvasBitmapSupport canvasBitmapSupport = new CanvasBitmapSupport();
 
@@ -134,7 +135,19 @@ namespace Morphological_image_analyzer
 
         void performDilationOfErosion_Click(object sender, RoutedEventArgs e)
         {
+            analizedCanvas.Children.Remove(analizedBorder);
 
+            Bitmap bitmapConverted = canvasBitmapSupport.convertCanvasToBitmap(analizedCanvas);
+
+            Bitmap bitmapPerformed = dilationOfErosionCalculator.performMorphologicalOperation(bitmapConverted);
+
+            BitmapSource bitmapToPut = canvasBitmapSupport.convertBitmapToBitmapImage(bitmapPerformed);
+
+            analizedCanvas.Children.Clear();
+            ImageBrush brush = new ImageBrush();
+            brush.ImageSource = bitmapToPut;
+            analizedCanvas.Background = brush;
+            analizedCanvas.Children.Add(analizedBorder);
         }
 
         void performErosionOfDilation_Click(object sender, RoutedEventArgs e)

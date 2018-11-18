@@ -67,6 +67,7 @@
     </Compile>
     <Compile Include="CanvasBitmapSupport.cs" />
     <Compile Include="DilationCalculator.cs" />
+    <Compile Include="DilationOfErosionCalculator.cs" />
     <Compile Include="ErosionCalculator.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
