@@ -16,22 +16,23 @@ namespace Morphological_image_analyzer
     /// </summary>
     public partial class MainWindow : Window
     {
-        static readonly int minSize = 15;
-        static readonly int sizeOfWindow = 260;
+        static readonly int minSize = 15; // minimum size of auto-generated element
+        static readonly int sizeOfWindow = 260; // size of window with analized image
 
-        static int imageId = 1;
-        static String catalogName = @"c:\Test\";
+        static int imageId = 1; // initial image id
+        static String catalogName = @"c:\Test\"; // path to catalog with temporary image files
 
-        DilationCalculator dilationCalculator = new DilationCalculator();
+        static readonly Random rnd = new Random(); // random numbers generator
 
-        ErosionCalculator erosionCalculator = new ErosionCalculator();
-
-        Random rnd = new Random();
+        // injection of morphological operation performers
+        static readonly DilationCalculator dilationCalculator = new DilationCalculator();
+        static readonly ErosionCalculator erosionCalculator = new ErosionCalculator();
 
         public MainWindow()
         {
             InitializeComponent();
 
+            // creating directory for temporary image files if it doeas not exists
             bool exists = System.IO.Directory.Exists(catalogName);
 
             if (!exists)
@@ -75,54 +76,36 @@ namespace Morphological_image_analyzer
             this.analizedCanvas.Children.Add(line);
         }
 
+        private void clearAnalized_Click(object sender, RoutedEventArgs e)
+        {
+            analizedCanvas.Background = System.Windows.Media.Brushes.White;
+            analizedCanvas.Children.Clear();
+            analizedCanvas.Children.Add(analizedBorder);
+        }
+
+        private void setAsOriginal_Click(object sender, RoutedEventArgs e)
+        {
+            originalCanvas.Children.Clear();
+            originalCanvas.Children.Add(originalBorder);
+
+            System.Windows.Media.Brush brush = analizedCanvas.Background;
+            originalCanvas.Background = brush;
+
+            foreach (UIElement element in analizedCanvas.Children)
+            {
+                string saved = XamlWriter.Save(element);
+                StringReader sReader = new StringReader(saved);
+                XmlReader xReader = XmlReader.Create(sReader);
+                UIElement newElement = (UIElement)XamlReader.Load(xReader);
+                originalCanvas.Children.Add(newElement);
+            }
+        }
+
         void performDilation_Click(object sender, RoutedEventArgs e)
         {
             analizedCanvas.Children.Remove(analizedBorder);
 
-            Rect bounds = VisualTreeHelper.GetDescendantBounds(analizedCanvas);
-            double dpi = 96d;
-
-
-            RenderTargetBitmap rtb = new RenderTargetBitmap((int)bounds.Width, (int)bounds.Height, dpi, dpi, System.Windows.Media.PixelFormats.Default);
-
-
-            DrawingVisual dv = new DrawingVisual();
-            using (DrawingContext dc = dv.RenderOpen())
-            {
-                VisualBrush vb = new VisualBrush(analizedCanvas);
-                dc.DrawRectangle(vb, null, new Rect(new System.Windows.Point(), bounds.Size));
-            }
-
-            rtb.Render(dv);
-
-            BitmapEncoder pngEncoder = new PngBitmapEncoder();
-            pngEncoder.Frames.Add(BitmapFrame.Create(rtb));
-
-            try
-            {
-                System.IO.MemoryStream ms = new System.IO.MemoryStream();
-
-                pngEncoder.Save(ms);
-                ms.Close();
-
-                System.IO.File.WriteAllBytes(catalogName + @"image" + imageId + @".png", ms.ToArray());
-            }
-            catch (Exception err)
-            {
-                MessageBox.Show(err.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
-
-
-            BitmapImage bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.UriSource = new Uri(catalogName + @"image" + imageId + @".png");
-            bitmap.EndInit();
-
-            imageId = imageId + 1;
-
-
-            Bitmap bitmapConverted = BitmapImage2Bitmap(bitmap);
+            Bitmap bitmapConverted = convertCanvasToBitmap(analizedCanvas);
 
             Bitmap bitmapPerformed = dilationCalculator.performMorphologicalOperation(bitmapConverted, 3);
 
@@ -141,50 +124,7 @@ namespace Morphological_image_analyzer
         {
             analizedCanvas.Children.Remove(analizedBorder);
 
-            Rect bounds = VisualTreeHelper.GetDescendantBounds(analizedCanvas);
-            double dpi = 96d;
-
-
-            RenderTargetBitmap rtb = new RenderTargetBitmap((int)bounds.Width, (int)bounds.Height, dpi, dpi, System.Windows.Media.PixelFormats.Default);
-
-
-            DrawingVisual dv = new DrawingVisual();
-            using (DrawingContext dc = dv.RenderOpen())
-            {
-                VisualBrush vb = new VisualBrush(analizedCanvas);
-                dc.DrawRectangle(vb, null, new Rect(new System.Windows.Point(), bounds.Size));
-            }
-
-            rtb.Render(dv);
-
-            BitmapEncoder pngEncoder = new PngBitmapEncoder();
-            pngEncoder.Frames.Add(BitmapFrame.Create(rtb));
-
-            try
-            {
-                System.IO.MemoryStream ms = new System.IO.MemoryStream();
-
-                pngEncoder.Save(ms);
-                ms.Close();
-
-                System.IO.File.WriteAllBytes(catalogName + @"image" + imageId + @".png", ms.ToArray());
-            }
-            catch (Exception err)
-            {
-                MessageBox.Show(err.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
-
-
-            BitmapImage bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.UriSource = new Uri(catalogName + @"image" + imageId + @".png");
-            bitmap.EndInit();
-
-            imageId = imageId + 1;
-
-
-            Bitmap bitmapConverted = BitmapImage2Bitmap(bitmap);
+            Bitmap bitmapConverted = convertCanvasToBitmap(analizedCanvas);
 
             Bitmap bitmapPerformed = erosionCalculator.performMorphologicalOperation(bitmapConverted);
 
@@ -196,6 +136,16 @@ namespace Morphological_image_analyzer
             brush.ImageSource = bitmapToPut;
             analizedCanvas.Background = brush;
             analizedCanvas.Children.Add(analizedBorder);
+        }
+
+        void performDilationOfErosion_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        void performErosionOfDilation_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
 
@@ -237,42 +187,52 @@ namespace Morphological_image_analyzer
             return retval;
         }
 
-        private System.Drawing.Bitmap BitmapFromWriteableBitmap(WriteableBitmap writeBmp)
+        private Bitmap convertCanvasToBitmap(Canvas canvas)
         {
-            System.Drawing.Bitmap bmp;
-            using (MemoryStream outStream = new MemoryStream())
+            Rect bounds = VisualTreeHelper.GetDescendantBounds(canvas);
+            double dpi = 96d;
+
+
+            RenderTargetBitmap rtb = new RenderTargetBitmap((int)bounds.Width, (int)bounds.Height, dpi, dpi, System.Windows.Media.PixelFormats.Default);
+
+
+            DrawingVisual dv = new DrawingVisual();
+            using (DrawingContext dc = dv.RenderOpen())
             {
-                BitmapEncoder enc = new BmpBitmapEncoder();
-                enc.Frames.Add(BitmapFrame.Create((BitmapSource)writeBmp));
-                enc.Save(outStream);
-                bmp = new System.Drawing.Bitmap(outStream);
+                VisualBrush vb = new VisualBrush(canvas);
+                dc.DrawRectangle(vb, null, new Rect(new System.Windows.Point(), bounds.Size));
             }
-            return bmp;
-        }
 
-        private void clearAnalized_Click(object sender, RoutedEventArgs e)
-        {
-            analizedCanvas.Background = System.Windows.Media.Brushes.White;
-            analizedCanvas.Children.Clear();
-            analizedCanvas.Children.Add(analizedBorder);
-        }
+            rtb.Render(dv);
 
-        private void setAsOriginal_Click(object sender, RoutedEventArgs e)
-        {
-            originalCanvas.Children.Clear();
-            originalCanvas.Children.Add(originalBorder);
+            BitmapEncoder pngEncoder = new PngBitmapEncoder();
+            pngEncoder.Frames.Add(BitmapFrame.Create(rtb));
 
-            System.Windows.Media.Brush brush = analizedCanvas.Background;
-            originalCanvas.Background = brush;
-
-            foreach (UIElement element in analizedCanvas.Children)
+            try
             {
-                string saved = XamlWriter.Save(element);
-                StringReader sReader = new StringReader(saved);
-                XmlReader xReader = XmlReader.Create(sReader);
-                UIElement newElement = (UIElement)XamlReader.Load(xReader);
-                originalCanvas.Children.Add(newElement);
+                System.IO.MemoryStream ms = new System.IO.MemoryStream();
+
+                pngEncoder.Save(ms);
+                ms.Close();
+
+                System.IO.File.WriteAllBytes(catalogName + @"image" + imageId + @".png", ms.ToArray());
             }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+
+
+            BitmapImage bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.UriSource = new Uri(catalogName + @"image" + imageId + @".png");
+            bitmap.EndInit();
+
+            imageId = imageId + 1;
+
+
+            return BitmapImage2Bitmap(bitmap);
         }
 
     }
