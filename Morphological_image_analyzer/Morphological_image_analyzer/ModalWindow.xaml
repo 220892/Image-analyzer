@@ -5,11 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Morphological_image_analyzer"
         mc:Ignorable="d"
-        Title="ModalWindow" Height="450" Width="800">
+        Title="Zarządzanie elementem strukturalnym" Height="450" Width="800">
     <Grid>
-        <StackPanel Orientation="Horizontal">
-            <TextBox Name="txtSomeBox" />
-            <Button Name="btnSaveData" Click="btnSaveData_Click" Content="Save" />
-        </StackPanel>
+        <TextBox x:Name="txtSomeBox" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="250,10,0,0" VerticalAlignment="Top" Width="30" Height="20"/>
+        <Button x:Name="btnSaveData" Content="Ustaw rozmiar" HorizontalAlignment="Left" Margin="350,10,0,0" VerticalAlignment="Top" Width="100" Height="20" Click="btnSaveData_Click"/>
     </Grid>
 </Window>
