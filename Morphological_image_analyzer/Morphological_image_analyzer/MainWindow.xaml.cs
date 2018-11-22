@@ -182,5 +182,11 @@ namespace Morphological_image_analyzer
             analizedCanvas.Children.Add(analizedBorder);
         }
 
+        void configureKernel_Click(object sender, RoutedEventArgs e)
+        {
+            ModalWindow modalWindow = new ModalWindow();
+            modalWindow.ShowDialog();
+        }
+
     }
 }
