@@ -20,23 +20,45 @@ namespace Morphological_image_analyzer
     /// </summary>
     public partial class ModalWindow : Window
     {
-        public static string myValue = String.Empty;
+        public static string size = String.Empty;
         public ModalWindow()
         {
             InitializeComponent();
         }
 
-        private void btnSaveData_Click(object sender, RoutedEventArgs e)
+        private void setKernelSize_Click(object sender, RoutedEventArgs e)
         {
-            myValue = txtSomeBox.Text;
-            this.Close();
+            size = kernelSize.Text;
+
+            stackPanel.Children.Clear();
+
+            for(int i = 1; i <= Int32.Parse(size); i++)
+            {
+                for (int j = 1; j <= Int32.Parse(size); j++)
+                {
+                    createNewTextBox(i, j);
+                }
+            }
+
+
         }
 
         
-        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        private void numberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
+
+        protected void createNewTextBox(int rowId, int columnId)
+        {
+            TextBox txtNumber = new TextBox();
+            //txtNumber.Name = rowId + ", " + columnId;
+            txtNumber.Text = "1";
+            txtNumber.Width = 20;
+            stackPanel.Children.Add(txtNumber);
+            //stackPanel.RegisterName(txtNumber.Name, txtNumber);
+        }
+
     }
 }

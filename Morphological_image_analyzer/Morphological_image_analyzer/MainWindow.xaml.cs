@@ -187,7 +187,7 @@ namespace Morphological_image_analyzer
             ModalWindow modalWindow = new ModalWindow();
             modalWindow.ShowDialog();
 
-            string valueFromModalTextBox = ModalWindow.myValue;
+            //string valueFromModalTextBox = ModalWindow.myValue;
         }
 
     }
