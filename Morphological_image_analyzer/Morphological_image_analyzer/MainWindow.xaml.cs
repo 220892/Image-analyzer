@@ -30,18 +30,7 @@ namespace Morphological_image_analyzer
 
         CanvasBitmapSupport canvasBitmapSupport = new CanvasBitmapSupport();
 
-        private byte[,] kernel
-        {
-            get
-            {
-                return new byte[,]
-                {
-            { 0, 1, 0 },
-            { 1, 1, 1 },
-            { 0, 1, 0 }
-                };
-            }
-        }
+        private byte[,] kernel;
 
         public MainWindow()
         {
@@ -187,7 +176,7 @@ namespace Morphological_image_analyzer
             ModalWindow modalWindow = new ModalWindow();
             modalWindow.ShowDialog();
 
-            //string valueFromModalTextBox = ModalWindow.myValue;
+            kernel = ModalWindow.kernel;
         }
 
     }

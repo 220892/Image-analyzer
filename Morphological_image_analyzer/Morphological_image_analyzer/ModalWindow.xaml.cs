@@ -20,7 +20,9 @@ namespace Morphological_image_analyzer
     /// </summary>
     public partial class ModalWindow : Window
     {
-        public static string size = String.Empty;
+        private static readonly char[] delimiters = { '_' };
+
+        public static byte[,] kernel;
         public ModalWindow()
         {
             InitializeComponent();
@@ -28,7 +30,7 @@ namespace Morphological_image_analyzer
 
         private void setKernelSize_Click(object sender, RoutedEventArgs e)
         {
-            size = kernelSize.Text;
+            string size = kernelSize.Text;
 
             stackPanel.Children.Clear();
 
@@ -54,6 +56,30 @@ namespace Morphological_image_analyzer
         private void confirmKernelMatrix_Click(object sender, RoutedEventArgs e)
         {
 
+            int sizeOfKernel = stackPanel.Children.Count;
+
+            kernel = new byte[sizeOfKernel, sizeOfKernel];
+
+            foreach (UIElement element in stackPanel.Children)
+            {
+                StackPanel horizontalPanel = (StackPanel) element;
+                string horizontalPanelName = horizontalPanel.Name;
+                string[] splitStringPanelName = horizontalPanelName.Split(delimiters);
+                int id_x = Int32.Parse(splitStringPanelName[1]) - 1;
+
+                foreach (UIElement elem in horizontalPanel.Children)
+                {
+                    TextBox box = (TextBox) elem;
+                    string textBoxName = box.Name;
+                    string[] splitStringTextBoxName = textBoxName.Split(delimiters);
+                    int id_y = Int32.Parse(splitStringTextBoxName[2]) - 1;
+
+                    kernel[id_x, id_y] = Byte.Parse(box.Text);
+                }
+
+            }
+
+            this.Close();
         }
 
 
