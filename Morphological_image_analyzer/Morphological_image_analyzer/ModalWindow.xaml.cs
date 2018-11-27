@@ -37,6 +37,7 @@ namespace Morphological_image_analyzer
                 StackPanel stackPanelHorizontal = new StackPanel();
                 stackPanelHorizontal.Name = "panel_" + i.ToString();
                 stackPanelHorizontal.Orientation = Orientation.Horizontal;
+                stackPanelHorizontal.HorizontalAlignment = HorizontalAlignment.Center;
 
                 stackPanel.Children.Add(stackPanelHorizontal);
                 stackPanel.RegisterName(stackPanelHorizontal.Name, stackPanelHorizontal);
@@ -50,7 +51,13 @@ namespace Morphological_image_analyzer
 
         }
 
-        
+        private void confirmKernelMatrix_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+
+
         private void numberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");

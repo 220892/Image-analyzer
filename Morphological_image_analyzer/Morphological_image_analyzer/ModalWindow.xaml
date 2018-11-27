@@ -7,8 +7,9 @@
         mc:Ignorable="d"
         Title="Zarządzanie elementem strukturalnym" Height="450" Width="800">
     <Grid>
-        <TextBox x:Name="kernelSize" PreviewTextInput="numberValidationTextBox" HorizontalAlignment="Left" Margin="250,10,0,0" VerticalAlignment="Top" Width="30" Height="20"/>
-        <Button x:Name="setKernelSize" Content="Ustaw rozmiar" HorizontalAlignment="Left" Margin="350,10,0,0" VerticalAlignment="Top" Width="100" Height="20" Click="setKernelSize_Click"/>
+        <TextBox x:Name="kernelSize" PreviewTextInput="numberValidationTextBox" HorizontalAlignment="Left" Margin="385,10,0,0" VerticalAlignment="Top" Width="30" Height="20"/>
+        <Button x:Name="setKernelSize" Content="Ustaw rozmiar" HorizontalAlignment="Left" Margin="185,10,0,0" VerticalAlignment="Top" Width="100" Height="20" Click="setKernelSize_Click"/>
+        <Button x:Name="confirmKernelMatrix" Content="Zatwierdź macierz" HorizontalAlignment="Left" Margin="515,10,0,0" VerticalAlignment="Top" Width="100" Height="20" Click="confirmKernelMatrix_Click"/>
         <StackPanel x:Name="stackPanel" Margin="0,40,0,0"/>
     </Grid>
 </Window>
