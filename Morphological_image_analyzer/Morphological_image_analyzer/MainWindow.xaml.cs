@@ -30,7 +30,7 @@ namespace Morphological_image_analyzer
 
         CanvasBitmapSupport canvasBitmapSupport = new CanvasBitmapSupport();
 
-        private byte[,] kernel;
+        private byte[,] kernel = { {0, 1, 0 }, {1, 1, 1}, {0, 1, 0} };
 
         public MainWindow()
         {
@@ -161,6 +161,44 @@ namespace Morphological_image_analyzer
             Bitmap bitmapConverted = canvasBitmapSupport.convertCanvasToBitmap(analizedCanvas);
 
             Bitmap bitmapPerformed = erosionOfDilationCalculator.performMorphologicalOperation(bitmapConverted, kernel);
+
+            BitmapSource bitmapToPut = canvasBitmapSupport.convertBitmapToBitmapImage(bitmapPerformed);
+
+            analizedCanvas.Children.Clear();
+            ImageBrush brush = new ImageBrush();
+            brush.ImageSource = bitmapToPut;
+            analizedCanvas.Background = brush;
+            analizedCanvas.Children.Add(analizedBorder);
+        }
+
+        void performEdgesWithErosion_Click(object sender, RoutedEventArgs e)
+        {
+            analizedCanvas.Children.Remove(analizedBorder);
+
+            Bitmap bitmapConverted = canvasBitmapSupport.convertCanvasToBitmap(analizedCanvas);
+
+            Bitmap bitmapPerformed = erosionCalculator.performMorphologicalOperation(bitmapConverted, kernel);
+
+            bitmapPerformed = canvasBitmapSupport.bitmapDifference(bitmapPerformed, bitmapConverted);
+
+            BitmapSource bitmapToPut = canvasBitmapSupport.convertBitmapToBitmapImage(bitmapPerformed);
+
+            analizedCanvas.Children.Clear();
+            ImageBrush brush = new ImageBrush();
+            brush.ImageSource = bitmapToPut;
+            analizedCanvas.Background = brush;
+            analizedCanvas.Children.Add(analizedBorder);
+        }
+
+        void performEdgesWithDilation_Click(object sender, RoutedEventArgs e)
+        {
+            analizedCanvas.Children.Remove(analizedBorder);
+
+            Bitmap bitmapConverted = canvasBitmapSupport.convertCanvasToBitmap(analizedCanvas);
+
+            Bitmap bitmapPerformed = dilationCalculator.performMorphologicalOperation(bitmapConverted, kernel);
+
+            bitmapPerformed = canvasBitmapSupport.bitmapDifference(bitmapConverted, bitmapPerformed);
 
             BitmapSource bitmapToPut = canvasBitmapSupport.convertBitmapToBitmapImage(bitmapPerformed);
 

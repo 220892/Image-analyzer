@@ -86,7 +86,13 @@ namespace Morphological_image_analyzer
 
         private void numberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex("[^0-9]+");
+            Regex regex = new Regex("[^13579]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void matrixContentValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-1]+.{2}");
             e.Handled = regex.IsMatch(e.Text);
         }
 
@@ -96,6 +102,10 @@ namespace Morphological_image_analyzer
             txtNumber.Name = "box_" + rowId.ToString() + "_" + columnId.ToString();
             txtNumber.Text = "1";
             txtNumber.Width = 20;
+            txtNumber.PreviewTextInput += new TextCompositionEventHandler((object sender, TextCompositionEventArgs ea) => {
+                Regex regex = new Regex("[^0-1]+.{2}");
+                ea.Handled = regex.IsMatch(ea.Text);
+            });
             panel.Children.Add(txtNumber);
             panel.RegisterName(txtNumber.Name, txtNumber);
         }
