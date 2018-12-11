@@ -14,7 +14,9 @@ namespace Morphological_image_analyzer
     class CanvasBitmapSupport
     {
         static int imageId = 1; // initial image id
-        static String catalogName = @"c:\Test\"; // path to catalog with temporary image files
+        static String catalogName = System.Environment.
+            GetFolderPath(Environment.SpecialFolder.CommonApplicationData)
+            + @"\Image_analyzer_files\"; // path to catalog with temporary image files
 
         public void initialize()
         {
