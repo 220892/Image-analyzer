@@ -15,6 +15,7 @@
         </Canvas>
         <Label Content="Oryginalny obraz" HorizontalAlignment="Left" Margin="39,25,0,0" VerticalAlignment="Top" Width="260" FontWeight="Bold" FontSize="20"/>
         <Label Content="Analizowany obraz" HorizontalAlignment="Left" Margin="321,25,0,0" VerticalAlignment="Top" Width="200" FontWeight="Bold" FontSize="20"/>
+        <Button Content="Załaduj obraz" HorizontalAlignment="Left" Margin="525,32,0,0" Name="btnLoad" VerticalAlignment="Top" Height="25" Width="90" Click="load_Click"/>
         <Button Content="Ustaw jako oryginalny" HorizontalAlignment="Left" Margin="321,332,0,0" VerticalAlignment="Top" Width="149" Height="45" Click="setAsOriginal_Click"/>
         <Label Content="Dostępne przekształcenia morfologiczne" HorizontalAlignment="Left" Margin="651,96,0,0" VerticalAlignment="Top" Height="25" Width="242" FontWeight="Bold"/>
         <Button Content="Wyczyść" HorizontalAlignment="Left" Margin="476,332,0,0" VerticalAlignment="Top" Width="105" Height="45" Click="clearAnalized_Click"/>

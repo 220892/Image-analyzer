@@ -8,6 +8,7 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Markup;
 using System.Xml;
+using Microsoft.Win32;
 
 namespace Morphological_image_analyzer
 {
@@ -177,6 +178,8 @@ namespace Morphological_image_analyzer
 
             Bitmap bitmapConverted = canvasBitmapSupport.convertCanvasToBitmap(analizedCanvas);
 
+            bitmapConverted = canvasBitmapSupport.convertToGray(bitmapConverted);
+
             Bitmap bitmapPerformed = erosionCalculator.performMorphologicalOperation(bitmapConverted, kernel);
 
             bitmapPerformed = canvasBitmapSupport.bitmapDifference(bitmapPerformed, bitmapConverted);
@@ -195,6 +198,8 @@ namespace Morphological_image_analyzer
             analizedCanvas.Children.Remove(analizedBorder);
 
             Bitmap bitmapConverted = canvasBitmapSupport.convertCanvasToBitmap(analizedCanvas);
+
+            bitmapConverted = canvasBitmapSupport.convertToGray(bitmapConverted);
 
             Bitmap bitmapPerformed = dilationCalculator.performMorphologicalOperation(bitmapConverted, kernel);
 
@@ -215,6 +220,22 @@ namespace Morphological_image_analyzer
             modalWindow.ShowDialog();
 
             kernel = ModalWindow.kernel;
+        }
+
+        void load_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog op = new OpenFileDialog();
+            op.Title = "Wybierz obraz";
+            op.Filter = "Wspierane formaty|*.jpg;*.jpeg;*.png|" +
+              "JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|" +
+              "Portable Network Graphic (*.png)|*.png";
+            if (op.ShowDialog() == true)
+            {
+                ImageBrush brush = new ImageBrush();
+                brush.ImageSource = new BitmapImage(new Uri(op.FileName));
+                analizedCanvas.Background = brush;
+            }
+
         }
 
     }

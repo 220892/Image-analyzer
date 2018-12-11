@@ -198,6 +198,48 @@ namespace Morphological_image_analyzer
             return result;
         }
 
+        public Bitmap convertToGray(Bitmap bitmap1)
+        {
+            int width1 = bitmap1.Width;
+            int height1 = bitmap1.Height;
+
+            // Bitmap 1
+            System.Drawing.Rectangle canvas1 = new System.Drawing.Rectangle(0, 0, width1, height1);
+            BitmapData srcData1 = bitmap1.LockBits(canvas1, ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+            int bytes1 = srcData1.Stride * srcData1.Height;
+            byte[] pixelBuffer1 = new byte[bytes1];
+
+            Marshal.Copy(srcData1.Scan0, pixelBuffer1, 0, bytes1);
+            bitmap1.UnlockBits(srcData1);
+
+            byte[] resultBuffer = new byte[bytes1];
+
+
+            int byteOffset = 0;
+            int value = 0;
+
+            for (int y = 0; y < height1; y++)
+            {
+                for (int x = 0; x < width1; x++)
+                {
+                    byteOffset = y * srcData1.Stride + x * 4;
+
+                    value = pixelBuffer1[byteOffset];
+                    resultBuffer[byteOffset] = (byte)value;
+                    resultBuffer[byteOffset + 1] = (byte)value;
+                    resultBuffer[byteOffset + 2] = (byte)value;
+                    resultBuffer[byteOffset + 3] = 255;
+                }
+            }
+
+            Bitmap result = new Bitmap(width1, height1);
+            BitmapData resultData = result.LockBits(canvas1, ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            Marshal.Copy(resultBuffer, 0, resultData.Scan0, bytes1);
+            result.UnlockBits(resultData);
+            return result;
+        }
+
 
     }
 }
