@@ -15,3 +15,5 @@ C:\PRZEK_MORF\Morphological_image_analyzer\Morphological_image_analyzer\obj\Debu
 C:\PRZEK_MORF\Morphological_image_analyzer\Morphological_image_analyzer\obj\Debug\Morphological_image_analyzer.csprojAssemblyReference.cache
 C:\PRZEK_MORF\Morphological_image_analyzer\Morphological_image_analyzer\obj\Debug\ModalWindow.g.cs
 C:\PRZEK_MORF\Morphological_image_analyzer\Morphological_image_analyzer\obj\Debug\ModalWindow.baml
+C:\PRZEK_MORF\Morphological_image_analyzer\Morphological_image_analyzer\obj\Debug\ModalWindowAnaliseResult.g.cs
+C:\PRZEK_MORF\Morphological_image_analyzer\Morphological_image_analyzer\obj\Debug\ModalWindowAnaliseResult.baml

@@ -238,5 +238,11 @@ namespace Morphological_image_analyzer
 
         }
 
+        void analizeImage_Click(object sender, RoutedEventArgs e)
+        {
+            ModalWindowAnaliseResult modalWindow = new ModalWindowAnaliseResult();
+            modalWindow.ShowDialog();
+        }
+
     }
 }

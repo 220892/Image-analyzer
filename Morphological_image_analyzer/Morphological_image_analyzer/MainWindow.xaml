@@ -37,6 +37,6 @@
         <Button Content="Erozja dylacji" HorizontalAlignment="Left" Margin="809,245,0,0" VerticalAlignment="Top" Width="84" Height="40" Click="performErosionOfDilation_Click"/>
         <Button Content="Granica zew." HorizontalAlignment="Left" Margin="662,300,0,0" VerticalAlignment="Top" Width="84" Height="40" Click="performEdgesWithDilation_Click"/>
         <Button Content="Granica wew." HorizontalAlignment="Left" Margin="809,300,0,0" VerticalAlignment="Top" Width="84" Height="40" Click="performEdgesWithErosion_Click"/>
-
+        <Button Content="Analizuj obraz pod kątem przekształceń morfologicznych" HorizontalAlignment="Left" Margin="620,360,0,0" VerticalAlignment="Top" Width="350" Height="40" Click="analizeImage_Click"/>
     </Grid>
 </Window>
