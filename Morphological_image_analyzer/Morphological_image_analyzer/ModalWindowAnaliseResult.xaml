@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="ModalWindowAnaliseResult" Height="250" Width="500">
     <Grid>
-        <Label Content="Trwa analizowanie obrazu..." HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="20"/>
+        <Label Name="analizingLabel" Content="Trwa analizowanie obrazu..." HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="20"/>
 
     </Grid>
 </Window>

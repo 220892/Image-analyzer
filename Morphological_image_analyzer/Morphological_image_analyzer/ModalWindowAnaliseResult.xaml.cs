@@ -11,6 +11,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 
 namespace Morphological_image_analyzer
 {
@@ -19,9 +22,22 @@ namespace Morphological_image_analyzer
     /// </summary>
     public partial class ModalWindowAnaliseResult : Window
     {
-        public ModalWindowAnaliseResult()
+
+        ImageAnalyzer imageAnalyzer = new ImageAnalyzer();
+
+        Bitmap bitmap;
+
+        public ModalWindowAnaliseResult(Bitmap bitmap)
         {
+            this.bitmap = bitmap;
             InitializeComponent();
+            calculateParameters();
+        }
+
+        public void calculateParameters()
+        {
+            imageAnalyzer.countObjects(bitmap);
+            int cos = 0;
         }
     }
 }

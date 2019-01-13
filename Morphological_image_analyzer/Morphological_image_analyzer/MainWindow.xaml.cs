@@ -26,6 +26,7 @@ namespace Morphological_image_analyzer
 
         static readonly int minSize = 15; // minimum size of auto-generated element
         static readonly int sizeOfWindow = 260; // size of window with analized image
+        static readonly int divide = 10;
 
         static readonly Random rnd = new Random(); // random numbers generator
 
@@ -43,8 +44,8 @@ namespace Morphological_image_analyzer
 
         void addSquere_Click(object sender, RoutedEventArgs e)
         {
-            int width = rnd.Next(minSize, sizeOfWindow);
-            int height = rnd.Next(minSize, sizeOfWindow);
+            int width = rnd.Next(minSize, sizeOfWindow/divide);
+            int height = rnd.Next(minSize, sizeOfWindow / divide);
             int startPointLeft = rnd.Next(sizeOfWindow - width);
             int startPointTop = rnd.Next(sizeOfWindow - height);
 
@@ -56,8 +57,8 @@ namespace Morphological_image_analyzer
 
         void addEllipse_Click(object sender, RoutedEventArgs e)
         {
-            int width = rnd.Next(minSize, sizeOfWindow);
-            int height = rnd.Next(minSize, sizeOfWindow);
+            int width = rnd.Next(minSize, sizeOfWindow / divide);
+            int height = rnd.Next(minSize, sizeOfWindow / divide);
             int startPointLeft = rnd.Next(sizeOfWindow - width);
             int startPointTop = rnd.Next(sizeOfWindow - height);
 
@@ -240,7 +241,11 @@ namespace Morphological_image_analyzer
 
         void analizeImage_Click(object sender, RoutedEventArgs e)
         {
-            ModalWindowAnaliseResult modalWindow = new ModalWindowAnaliseResult();
+            analizedCanvas.Children.Remove(analizedBorder);
+
+            Bitmap bitmapConverted = canvasBitmapSupport.convertCanvasToBitmap(analizedCanvas);
+
+            ModalWindowAnaliseResult modalWindow = new ModalWindowAnaliseResult(bitmapConverted);
             modalWindow.ShowDialog();
         }
 

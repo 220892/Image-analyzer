@@ -11,10 +11,9 @@ namespace Morphological_image_analyzer
 {
     class FloodFillService
     {
-        public void FloodFill(Bitmap bmp, Point pt, Color targetColor, Color replacementColor)
+        public Bitmap FloodFill(Bitmap bmp, Point pt, Color targetColor, Color replacementColor)
         {
             Stack<Point> pixels = new Stack<Point>();
-            targetColor = bmp.GetPixel(pt.X, pt.Y);
             pixels.Push(pt);
 
             while (pixels.Count > 0)
@@ -23,8 +22,8 @@ namespace Morphological_image_analyzer
                 if (a.X < bmp.Width && a.X > 0 &&
                         a.Y < bmp.Height && a.Y > 0)
                 {
-
-                    if (bmp.GetPixel(a.X, a.Y) == targetColor)
+                    Color p = bmp.GetPixel(a.X, a.Y);
+                    if (p.A == targetColor.A && p.R == targetColor.R && p.G == targetColor.G && p.B == targetColor.B)
                     {
                         bmp.SetPixel(a.X, a.Y, replacementColor);
                         pixels.Push(new Point(a.X - 1, a.Y));
@@ -34,7 +33,7 @@ namespace Morphological_image_analyzer
                     }
                 }
             }
-            return;
+            return bmp;
         }
     }
 }

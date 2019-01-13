@@ -72,6 +72,8 @@
     <Compile Include="DilationOfErosionCalculator.cs" />
     <Compile Include="ErosionCalculator.cs" />
     <Compile Include="ErosionOfDilationCalculator.cs" />
+    <Compile Include="FloodFillService.cs" />
+    <Compile Include="ImageAnalyzer.cs" />
     <Compile Include="IMorphologicalCalculator.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
