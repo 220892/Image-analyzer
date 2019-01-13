@@ -30,6 +30,11 @@ namespace Morphological_image_analyzer
                         pixels.Push(new Point(a.X + 1, a.Y));
                         pixels.Push(new Point(a.X, a.Y - 1));
                         pixels.Push(new Point(a.X, a.Y + 1));
+
+                        pixels.Push(new Point(a.X - 1, a.Y + 1));
+                        pixels.Push(new Point(a.X + 1, a.Y - 1));
+                        pixels.Push(new Point(a.X - 1, a.Y - 1));
+                        pixels.Push(new Point(a.X + 1, a.Y + 1));
                     }
                 }
             }

@@ -23,6 +23,8 @@ namespace Morphological_image_analyzer
         static readonly IMorphologicalCalculator dilationOfErosionCalculator = new DilationOfErosionCalculator();
         static readonly IMorphologicalCalculator erosionOfDilationCalculator = new ErosionOfDilationCalculator();
 
+        static readonly ImageAnalyzer imageAnalyzer = new ImageAnalyzer();
+
 
         static readonly int minSize = 15; // minimum size of auto-generated element
         static readonly int sizeOfWindow = 260; // size of window with analized image
@@ -72,11 +74,22 @@ namespace Morphological_image_analyzer
         {
             int x1 = rnd.Next(minSize, sizeOfWindow);
             int y1 = rnd.Next(minSize, sizeOfWindow);
-            int x2 = rnd.Next(minSize, sizeOfWindow);
-            int y2 = rnd.Next(minSize, sizeOfWindow);
+            int x2 = rnd.Next(x1, sizeOfWindow);
+            int y2 = rnd.Next(y1, sizeOfWindow);
 
-            Line line = new Line() { X1 = x1, Y1 = y1, X2 = x2, Y2 = y2, StrokeThickness = 5, Stroke = System.Windows.Media.Brushes.Black };
-            this.analizedCanvas.Children.Add(line);
+            System.Windows.Shapes.Rectangle rect;
+
+            if (x1 % 2 == 0)
+            {
+                rect = new System.Windows.Shapes.Rectangle() { Width = 5, Height = x2 - x1, Fill = System.Windows.Media.Brushes.Transparent, StrokeThickness = 5, Stroke = System.Windows.Media.Brushes.Black };
+            } else
+            {
+                rect = new System.Windows.Shapes.Rectangle() { Width = y2 - y1, Height = 5, Fill = System.Windows.Media.Brushes.Transparent, StrokeThickness = 5, Stroke = System.Windows.Media.Brushes.Black };
+            }
+
+            this.analizedCanvas.Children.Add(rect);
+            Canvas.SetTop(rect, x1);
+            Canvas.SetLeft(rect, y1);
         }
 
         private void clearAnalized_Click(object sender, RoutedEventArgs e)
@@ -244,6 +257,8 @@ namespace Morphological_image_analyzer
             analizedCanvas.Children.Remove(analizedBorder);
 
             Bitmap bitmapConverted = canvasBitmapSupport.convertCanvasToBitmap(analizedCanvas);
+
+            analizedCanvas.Children.Add(analizedBorder);
 
             ModalWindowAnaliseResult modalWindow = new ModalWindowAnaliseResult(bitmapConverted);
             modalWindow.ShowDialog();

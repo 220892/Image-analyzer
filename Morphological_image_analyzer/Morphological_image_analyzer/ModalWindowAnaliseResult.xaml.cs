@@ -31,13 +31,19 @@ namespace Morphological_image_analyzer
         {
             this.bitmap = bitmap;
             InitializeComponent();
-            calculateParameters();
         }
 
-        public void calculateParameters()
+        public void startAnalize_Click(object sender, RoutedEventArgs e)
         {
-            imageAnalyzer.countObjects(bitmap);
-            int cos = 0;
+            int allObjects = imageAnalyzer.countObjects(bitmap);
+            int onePixelObjects = imageAnalyzer.countObjectsWithOnePixelLine(bitmap);
+            showResultsOfAnalize(allObjects, onePixelObjects);
+        }
+
+        private void showResultsOfAnalize(int allObjects, int onePixelObjects)
+        {
+            countOfAllObjectsValue.Content = allObjects;
+            countOfObjectsWithOnePointLineValue.Content = onePixelObjects;
         }
     }
 }

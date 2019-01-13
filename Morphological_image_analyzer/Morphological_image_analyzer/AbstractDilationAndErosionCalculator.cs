@@ -52,6 +52,15 @@ namespace Morphological_image_analyzer
                             }
                         }
                     }
+
+                    if (value > 127)
+                    {
+                        value = 255;
+                    } else
+                    {
+                        value = 0;
+                    }
+
                     resultBuffer[byteOffset] = value;
                     resultBuffer[byteOffset + 1] = value;
                     resultBuffer[byteOffset + 2] = value;
