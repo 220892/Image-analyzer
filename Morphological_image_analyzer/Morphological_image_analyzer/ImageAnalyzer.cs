@@ -106,10 +106,22 @@ namespace Morphological_image_analyzer
                 {
                     if ((pixelBuffer[calculateByteOffset(x - 1, y, srcData.Stride)] != 0
                         && pixelBuffer[calculateByteOffset(x, y,srcData.Stride)] == 0
-                        && pixelBuffer[calculateByteOffset(x + 1, y, srcData.Stride)] != 0)
-                        || (pixelBuffer[calculateByteOffset(x, y - 1, srcData.Stride)] != 0
+                        && pixelBuffer[calculateByteOffset(x + 1, y, srcData.Stride)] != 0
+                        && pixelBuffer[calculateByteOffset(x - 1, y - 1, srcData.Stride)] != 0
+                        && pixelBuffer[calculateByteOffset(x, y - 1, srcData.Stride)] == 0
+                        && pixelBuffer[calculateByteOffset(x + 1, y - 1, srcData.Stride)] != 0
+                        && pixelBuffer[calculateByteOffset(x - 1, y + 1, srcData.Stride)] != 0
+                        && pixelBuffer[calculateByteOffset(x, y + 1, srcData.Stride)] == 0
+                        && pixelBuffer[calculateByteOffset(x + 1, y + 1, srcData.Stride)] != 0)
+                        || (pixelBuffer[calculateByteOffset(x - 1, y - 1, srcData.Stride)] != 0
+                        && pixelBuffer[calculateByteOffset(x - 1, y, srcData.Stride)] == 0
+                        && pixelBuffer[calculateByteOffset(x - 1, y + 1, srcData.Stride)] != 0
+                        && pixelBuffer[calculateByteOffset(x, y - 1, srcData.Stride)] != 0
                         && pixelBuffer[calculateByteOffset(x, y, srcData.Stride)] == 0
-                        && pixelBuffer[calculateByteOffset(x, y + 1, srcData.Stride)] != 0))
+                        && pixelBuffer[calculateByteOffset(x, y + 1, srcData.Stride)] != 0
+                        && pixelBuffer[calculateByteOffset(x + 1, y - 1, srcData.Stride)] != 0
+                        && pixelBuffer[calculateByteOffset(x + 1, y, srcData.Stride)] == 0
+                        && pixelBuffer[calculateByteOffset(x + 1, y + 1, srcData.Stride)] != 0))
                     {
                         return new Point(x, y);
                     }
