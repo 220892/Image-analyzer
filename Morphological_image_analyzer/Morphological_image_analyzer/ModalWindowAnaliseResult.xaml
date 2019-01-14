@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Morphological_image_analyzer"
         mc:Ignorable="d"
-        Title="ModalWindowAnaliseResult" Height="250" Width="500">
+        Title="Analiza obrazu pod kątem przekształceń morfologicznych" Height="250" Width="500">
     <Grid>
         <Button Content="Rozpocznij analizę" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Width="125" Click="startAnalize_Click"/>
         <Grid VerticalAlignment="Center" Width="300">
@@ -13,6 +13,8 @@
             <Label Name="countOfAllObjectsValue" Margin="0,0,0,0" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="13"/>
             <Label Name="countOfObjectsWithOnePointLine" Margin="0,20,0,0" Content="Liczba obiektów z liniami jednopikselowymi: " HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="13"/>
             <Label Name="countOfObjectsWithOnePointLineValue" Margin="0,20,0,0" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="13"/>
+            <Label Name="countOfClosedObjects" Margin="0,40,0,0" Content="Liczba zamkniętych obiektów: " HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="13"/>
+            <Label Name="countOfClosedObjectsValue" Margin="0,40,0,0" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="13"/>
         </Grid>
     </Grid>
 </Window>

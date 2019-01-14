@@ -37,13 +37,15 @@ namespace Morphological_image_analyzer
         {
             int allObjects = imageAnalyzer.countObjects(bitmap);
             int onePixelObjects = imageAnalyzer.countObjectsWithOnePixelLine(bitmap);
-            showResultsOfAnalize(allObjects, onePixelObjects);
+            int closedObjects = imageAnalyzer.countClosedObjects(bitmap);
+            showResultsOfAnalize(allObjects, onePixelObjects, closedObjects);
         }
 
-        private void showResultsOfAnalize(int allObjects, int onePixelObjects)
+        private void showResultsOfAnalize(int allObjects, int onePixelObjects, int closedObjects)
         {
             countOfAllObjectsValue.Content = allObjects;
             countOfObjectsWithOnePointLineValue.Content = onePixelObjects;
+            countOfClosedObjectsValue.Content = closedObjects;
         }
     }
 }

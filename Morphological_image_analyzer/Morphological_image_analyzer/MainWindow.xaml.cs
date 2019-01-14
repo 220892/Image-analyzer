@@ -23,9 +23,6 @@ namespace Morphological_image_analyzer
         static readonly IMorphologicalCalculator dilationOfErosionCalculator = new DilationOfErosionCalculator();
         static readonly IMorphologicalCalculator erosionOfDilationCalculator = new ErosionOfDilationCalculator();
 
-        static readonly ImageAnalyzer imageAnalyzer = new ImageAnalyzer();
-
-
         static readonly int minSize = 15; // minimum size of auto-generated element
         static readonly int sizeOfWindow = 260; // size of window with analized image
         static readonly int divide = 10;
@@ -72,18 +69,18 @@ namespace Morphological_image_analyzer
 
         void addLine_Click(object sender, RoutedEventArgs e)
         {
-            int x1 = rnd.Next(minSize, sizeOfWindow);
-            int y1 = rnd.Next(minSize, sizeOfWindow);
-            int x2 = rnd.Next(x1, sizeOfWindow);
-            int y2 = rnd.Next(y1, sizeOfWindow);
+            int x1 = rnd.Next(minSize, sizeOfWindow - 5);
+            int y1 = rnd.Next(minSize, sizeOfWindow - 5);
 
             System.Windows.Shapes.Rectangle rect;
 
             if (x1 % 2 == 0)
             {
+                int x2 = rnd.Next(x1, sizeOfWindow - 5);
                 rect = new System.Windows.Shapes.Rectangle() { Width = 5, Height = x2 - x1, Fill = System.Windows.Media.Brushes.Transparent, StrokeThickness = 5, Stroke = System.Windows.Media.Brushes.Black };
             } else
             {
+                int y2 = rnd.Next(y1, sizeOfWindow - 5);
                 rect = new System.Windows.Shapes.Rectangle() { Width = y2 - y1, Height = 5, Fill = System.Windows.Media.Brushes.Transparent, StrokeThickness = 5, Stroke = System.Windows.Media.Brushes.Black };
             }
 
